@@ -153,7 +153,7 @@ schedule("*/5 * * * *", () => {
                             for(const user of data[stream.user_login.toLowerCase()].users) {
                                 client.users.fetch(user).then((user) => {
                                     user.send({
-                                        content: `<@${user.id}>\nYou are receiving this message because you have told me to notify you when ${stream.user_name} goes live!\nIf you want to stop receiving these messages, use \`n!unnotify ${stream.user_login}\`!`,
+                                        content: `<@${user.id}>\nYou are receiving this message because you have told me to notify you when ${stream.user_name} goes live!\nIf you want to stop receiving these messages, use \`n!unnotify ${stream.user_login}\``,
                                         embeds: [
                                             {
                                                 author: {
