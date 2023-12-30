@@ -4,8 +4,8 @@ The bot is written in Node.js using the [discord.js](https://discord.js.org/#/) 
 
 ## Setup
 ### Prerequisites
-- [Node.js](https://nodejs.org/en/) (version 12 or greater)
-- [npm](https://www.npmjs.com/) (version 6 or greater)
+- [Node.js](https://nodejs.org/en/) (version 14 or greater)
+- [npm](https://www.npmjs.com/) (version 10 or greater)
 - [git (optional)](https://git-scm.com/)
 
 ### Installation
