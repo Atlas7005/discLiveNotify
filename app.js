@@ -71,6 +71,15 @@ client.on("messageCreate", async (msg) => {
             writeFileSync("notifiers.json", JSON.stringify(data, null, 4));
             break;
         }
+        case "list": {
+            const data = JSON.parse(readFileSync("notifiers.json"));
+            const streamers = Object.keys(data);
+            if(streamers.length === 0) return msg.reply("You are not being notified when anyone goes live!");
+            const streamersList = streamers.filter((streamer) => data[streamer].users.includes(msg.author.id));
+            if(streamersList.length === 0) return msg.reply("You are not being notified when anyone goes live!");
+            msg.reply("You are being notified when the following streamers go live:\n```\n" + streamersList.join("\n") + "```");
+            break;
+        }
         case "islive":
         case "live": {
             const username = args.shift();
@@ -153,15 +162,16 @@ schedule("*/5 * * * *", () => {
                             for(const user of data[stream.user_login.toLowerCase()].users) {
                                 client.users.fetch(user).then((user) => {
                                     user.send({
-                                        content: `<@${user.id}>\nYou are receiving this message because you have told me to notify you when ${stream.user_name} goes live!\nIf you want to stop receiving these messages, use \`n!unnotify ${stream.user_login}\``,
+                                        content: `<@${user.id}>\nYou are receiving this message because you have told me to notify you when \`${stream.user_name}\` goes live!\nIf you want to stop receiving these messages, use \`n!unnotify ${stream.user_login}\``,
                                         embeds: [
                                             {
                                                 author: {
-                                                    name: stream.user_name,
-                                                    icon_url: users.find((user) => user.id === stream.user_id).profile_image_url
+                                                    name: `${stream.user_name} is now live on Twitch!`,
+                                                    icon_url: users.find((user) => user.id === stream.user_id).profile_image_url,
+                                                    url: "https://twitch.tv/" + stream.user_login
                                                 },
-                                                title: stream.user_name + " is now live!",
-                                                description: stream.title+"\n\nPress [here](<https://twitch.tv/"+stream.user_login+">) to watch the stream!",
+                                                title: stream.title,
+                                                description: `Playing ${stream.game_name}\n\nPress [here](<https://twitch.tv/${stream.user_login}>) to watch the stream!`,
                                                 url: "https://twitch.tv/" + stream.user_login,
                                                 color: 0x9146ff,
                                                 image: {
